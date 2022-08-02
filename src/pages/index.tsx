@@ -6,7 +6,7 @@ import QuestionCards from "~/components/templates/questionCards";
 import { Question } from "~/types/question";
 
 const questions: Question[] = [
-  { id: "1", text: "青の数字タイルは何前ある？", isShare: false },
+  { id: "1", text: "青の数字タイルは何枚ある？", isShare: false },
   { id: "2", text: "赤の数の合計数は？", isShare: false },
   { id: "3", text: "大きいほうから3枚の合計数は？", isShare: false },
   { id: "4", text: "1または2はどこ？（どちらかひとつ選択）", isShare: false },
