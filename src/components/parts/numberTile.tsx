@@ -6,6 +6,7 @@ type Props = {
 /**
  * 数字カードコンポーネント
  * @param children 内容
+ * @param color カードの色
  */
 
 const NumberTile: React.VFC<Props> = ({ children, color }) => {
