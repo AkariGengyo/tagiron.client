@@ -4,7 +4,7 @@ type Props = {
 };
 
 /**
- * 数字カードコンポーネント
+ * 数字タイルコンポーネント
  * @param children 内容
  * @param color カードの色
  */
