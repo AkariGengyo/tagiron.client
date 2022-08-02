@@ -19,7 +19,7 @@ const NumberTile: React.VFC<Props> = ({ children, color }) => {
     cardColor = "bg-yellow-300";
   }
   return (
-    <div className="flex bg-black border-2 border-white rounded w-12 h-14 justify-center items-center">
+    <div className="flex bg-black border-2 border-white rounded w-12 h-16 justify-center items-center">
       <div
         className={`flex rounded-full w-10 h-10 justify-center items-center ${cardColor}`}
       >
