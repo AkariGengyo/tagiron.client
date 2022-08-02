@@ -9,11 +9,13 @@ type Props = {
 
 const QuestionCards: React.FC<Props> = ({ questions, className }) => {
   return (
-    <div className={`grid grid-cols-3 gap-2 ${className}`}>
+    <div className={`grid grid-cols-3 justify-items-center gap-2 ${className}`}>
       {questions.map((question) => (
-        <QuestionCard key={question.id} className="max-w-[400px]">
-          {question.text}
-        </QuestionCard>
+        <QuestionCard
+          key={question.id}
+          question={question}
+          className="max-w-[400px]"
+        />
       ))}
     </div>
   );
