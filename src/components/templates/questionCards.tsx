@@ -1,6 +1,6 @@
 import React from "react";
 import { Question } from "~/types/question";
-import QuestionCard from "../parts/QuestionCard";
+import QuestionCard from "~/components/parts/questionCard";
 
 type Props = {
   questions: Question[];
