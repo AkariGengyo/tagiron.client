@@ -25,7 +25,10 @@ const Button: React.FC<Props> = ({
   }
   return (
     <button
-      className={`rounded px-4 py-1.5 font-bold ${colorStyle} ` + className}
+      className={
+        `min-h-[40px] w-full rounded px-4 py-1.5 font-bold ${colorStyle} ` +
+        className
+      }
       {...props}
     >
       {children}
