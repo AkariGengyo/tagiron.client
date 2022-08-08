@@ -15,7 +15,7 @@ const Chat: React.FC<Props> = ({ messages, className }) => {
         {messages.map((message, i) => (
           <ChatMessage
             key={`message-${i}`}
-            className={`${
+            className={`max-w-[90%] ${
               message.senderId == "1"
                 ? "place-self-end bg-yellow-200"
                 : "place-self-start" // todo: 自分のidに置換
