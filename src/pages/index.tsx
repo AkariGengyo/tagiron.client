@@ -2,6 +2,7 @@ import Head from "next/head";
 import React from "react";
 import Button from "~/components/parts/button";
 import QuestionCards from "~/components/templates/questionCards";
+import SelectNumbers from "~/components/templates/selectNumbers";
 
 import { Question } from "~/types/question";
 
@@ -29,6 +30,7 @@ const Index: React.VFC = () => {
       <main>
         <Button>ボタン</Button>
         <QuestionCards questions={questions} />
+        <SelectNumbers isOpen={true}></SelectNumbers>
       </main>
     </div>
   );
