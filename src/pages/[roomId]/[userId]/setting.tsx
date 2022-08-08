@@ -24,7 +24,7 @@ const Index: React.VFC = () => {
           <h2 className="text-2xl font-bold">プレイヤー</h2>
           <div className="my-10 flex flex-col gap-y-3">
             {players.map((player) => (
-              <span className="">{player.name}</span>
+              <span key={player.id}>{player.name}</span>
             ))}
           </div>
           <Button onClick={() => router.push(`/${roomId}/${userId}`)}>
