@@ -1,39 +1,26 @@
+import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
+import { createRoom } from "~/api/room";
+import { createUser } from "~/api/user";
 import Button from "~/components/parts/button";
-import NumberTile from "~/components/parts/numberTile";
-import Chat from "~/components/templates/chat";
-import QuestionCards from "~/components/templates/questionCards";
-import { Message } from "~/types/chat";
-
-import { Question } from "~/types/question";
-
-const questions: Question[] = [
-  { id: "1", text: "青の数字タイルは何枚ある？", isShare: false },
-  { id: "2", text: "赤の数の合計数は？", isShare: false },
-  { id: "3", text: "大きいほうから3枚の合計数は？", isShare: false },
-  { id: "4", text: "1または2はどこ？（どちらかひとつ選択）", isShare: false },
-  { id: "5", text: "奇数は何枚ある？", isShare: false },
-  {
-    id: "6",
-    text: "数字タイルの最大の数から最小の数を引いた数は？",
-    isShare: true,
-  },
-];
-
-const messages: Message[] = [
-  { content: "青の数字タイルは何枚ある？", senderId: "1" },
-  { content: "赤の数の合計数は？", senderId: "2" },
-  { content: "大きいほうから3枚の合計数は？", senderId: "1" },
-  { content: "1または2はどこ？（どちらかひとつ選択）", senderId: "1" },
-  { content: "奇数は何枚ある？", senderId: "2" },
-  {
-    content: "数字タイルの最大の数から最小の数を引いた数は？",
-    senderId: "2",
-  },
-];
+import Textbox from "~/components/parts/textbox";
 
 const Index: React.VFC = () => {
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const createNewRoom = async () => {
+    const { id } = await createRoom();
+    const userId = await registerUserId(id);
+    router.push(`/${id}/${userId}/setting`);
+  };
+
+  const registerUserId = async (roomId: string) => {
+    const { id } = await createUser({ roomId });
+    return id;
+  };
+
   return (
     <div>
       <Head>
@@ -42,13 +29,23 @@ const Index: React.VFC = () => {
       </Head>
 
       <main>
-        <div className="grid grid-cols-3 divide-x-2">
-          <div className="col-span-1 px-2">
-            <Chat messages={messages} />
+        <div className="mx-auto max-w-3xl px-3">
+          <div className="mx-auto my-10 flex max-w-xl flex-col gap-y-3">
+            <h1 className="my-5 text-center text-3xl font-bold">Tagiron</h1>
+            <Button onClick={createNewRoom}>ルームを作成する</Button>
+            <Button onClick={() => setIsOpen((prev) => !prev)}>
+              ルームを探す
+            </Button>
           </div>
-          <div className="col-span-2 px-2">
-            <QuestionCards questions={questions} />
-          </div>
+          {isOpen && (
+            <div className="mx-auto my-10 flex max-w-xl flex-col gap-y-3">
+              <form className="flex gap-x-1">
+                <Textbox placeholder="ルームIDで検索" />
+                <Button className="max-w-[80px]">検索</Button>
+              </form>
+              <Button>入室</Button>
+            </div>
+          )}
         </div>
       </main>
     </div>
