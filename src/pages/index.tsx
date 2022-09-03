@@ -1,24 +1,30 @@
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
-import React, { useState } from "react";
-import { createRoom } from "~/api/room";
-import { createUser } from "~/api/user";
+import React, { FormEvent, useState } from "react";
+import { createPlayer, createRoom, fetchRoom } from "~/api/rooms";
 import Button from "~/components/parts/button";
 import Textbox from "~/components/parts/textbox";
 
 const Index: React.VFC = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [roomId, setRoomId] = useState<string>(undefined);
+  const [roomIdField, setRoomIdField] = useState<string>(undefined);
 
   const createNewRoom = async () => {
-    const { id } = await createRoom();
-    const userId = await registerUserId(id);
-    router.push(`/${id}/${userId}/setting`);
+    const newRoomId = await createRoom();
+    enterRoom(newRoomId);
   };
 
-  const registerUserId = async (roomId: string) => {
-    const { id } = await createUser({ roomId });
-    return id;
+  const findRoom = async (e: FormEvent) => {
+    e.preventDefault();
+    const result = await fetchRoom(roomIdField);
+    setRoomId(result);
+  };
+
+  const enterRoom = async (roomId: string) => {
+    const playerId = await createPlayer(roomId);
+    router.push(`/${roomId}/${playerId}/setting`);
   };
 
   return (
@@ -39,11 +45,15 @@ const Index: React.VFC = () => {
           </div>
           {isOpen && (
             <div className="mx-auto my-10 flex max-w-xl flex-col gap-y-3">
-              <form className="flex gap-x-1">
-                <Textbox placeholder="ルームIDで検索" />
+              <form onSubmit={findRoom} className="flex gap-x-1">
+                <Textbox
+                  onChange={(e) => setRoomIdField(e.target.value)}
+                  placeholder="ルームIDで検索"
+                />
                 <Button className="max-w-[80px]">検索</Button>
               </form>
-              <Button>入室</Button>
+              {roomId && <div className="w-full p-5">RoomID: {roomId}</div>}
+              <Button onClick={() => enterRoom(roomId)}>入室</Button>
             </div>
           )}
         </div>

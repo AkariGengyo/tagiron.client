@@ -1,12 +1,13 @@
 import Head from "next/head";
-import React from "react";
-import Button from "~/components/parts/button";
-import NumberTile from "~/components/parts/numberTile";
+import React, { useEffect, useState } from "react";
+import socketIOClient, { Socket } from "socket.io-client";
 import Chat from "~/components/templates/chat";
 import QuestionCards from "~/components/templates/questionCards";
+import { useSocket } from "~/hooks/useSocket";
 import { Message } from "~/types/chat";
-
 import { Question } from "~/types/question";
+
+const baseUrl = process.env.NEXT_PUBLIC_API_BASEURL || "/api";
 
 const questions: Question[] = [
   { id: "1", text: "青の数字タイルは何枚ある？", isShare: false },
@@ -21,7 +22,7 @@ const questions: Question[] = [
   },
 ];
 
-const messages: Message[] = [
+const initMessages: Message[] = [
   { content: "青の数字タイルは何枚ある？", senderId: "1" },
   { content: "赤の数の合計数は？", senderId: "2" },
   { content: "大きいほうから3枚の合計数は？", senderId: "1" },
@@ -34,6 +35,16 @@ const messages: Message[] = [
 ];
 
 const Index: React.VFC = () => {
+  const [messages, setMessages] = useState<Message[]>(initMessages);
+  const socket = useSocket();
+
+  useEffect(() => {
+    socket?.on("action", (data) => {
+      setMessages((prev) => [...prev, data]);
+      console.log([...messages, data]);
+    });
+  }, [socket]);
+
   return (
     <div>
       <Head>
@@ -44,7 +55,7 @@ const Index: React.VFC = () => {
       <main>
         <div className="grid grid-cols-3 divide-x-2">
           <div className="col-span-1 px-2">
-            <Chat messages={messages} />
+            <Chat messages={messages} socket={socket} />
           </div>
           <div className="col-span-2 px-2">
             <QuestionCards questions={questions} />
